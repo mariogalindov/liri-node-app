@@ -32,7 +32,7 @@ This will display the following information:
 
 ## spotify-this-song ## 
 
-This command uses the **Node-Spotify-API** node package, the sintaxis is node liri.js spotify-this-song <song name here>
+This command uses the **Node-Spotify-API** node package, the sintaxis is node liri.js spotify-this-song '<songname here>'
 
 This will bring the following information: 
 * Artist(s)
@@ -44,7 +44,7 @@ If no song is given to the app, this command by default will display the informa
 
 ## movie-this ## 
 
-This command also uses **Axios** to use the **OMDB** API, the sintaxis is node liri.js movie-this <movie name here>
+This command also uses **Axios** to use the **OMDB** API, the sintaxis is node liri.js movie-this '<movie name here>'
 
 This will bring the following information: 
 * Title of the movie.
