@@ -34,10 +34,15 @@ for (var i = 3; i < nodeArgs.length; i++) {
 }
 
 // concert-this function
-var bandsInTown = function() {
+var bandsInTown = function(band) {
+  fs.appendFile("log.txt", `${command} ${band} @ ${moment().format('MMMM Do YYYY, h:mm:ss a')}\n`, function(error) {
+    if (error) {
+      console.log(error)
+    } 
+  });
     
-    var artist = val;
-    var concertURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"
+    // var artist = val;
+    var concertURL = "https://rest.bandsintown.com/artists/" + band + "/events?app_id=codingbootcamp"
     // console.log(concertURL);
 
     axios.get(concertURL).then(
@@ -72,11 +77,15 @@ var bandsInTown = function() {
 }
 
 // spotify-this-song function
-var spotifyThis = function() {
-    // console.log(val)
+var spotifyThis = function(song) {
+  fs.appendFile("log.txt", `${command} ${song} @ ${moment().format('MMMM Do YYYY, h:mm:ss a')}\n`, function(error) {
+    if (error) {
+      console.log(error)
+    } 
+  });
 
-    if (val !== ""){
-        spotify.search({ type: 'track', query: val }, function(err, data) {
+    if (song !== ""){
+        spotify.search({ type: 'track', query: song }, function(err, data) {
             if (err) {
               return console.log('Error occurred: ' + err);
             }
@@ -89,8 +98,14 @@ var spotifyThis = function() {
             console.log(`Song: ${element.name} \nURL: ${element.preview_url} \nAlbum: ${element.album.name}\n`)
           });
         })
-    } else {
-        spotify.search({ type: 'track', query: "The Sign Ace of Base"}, function(err, data) {
+    } else if (song == "") {
+
+      fs.appendFile("log.txt", `${command} (empty) My Sweet Shadow - In Flames  @ ${moment().format('MMMM Do YYYY, h:mm:ss a')}\n`, function(error) {
+        if (error) {
+          console.log(error)
+        } 
+      });
+        spotify.search({ type: 'track', query: "In Flames My Sweet Shadow "}, function(err, data) {
             if (err) {
               return console.log('Error occurred: ' + err);
             }
@@ -108,9 +123,14 @@ var spotifyThis = function() {
 
 
 //movie-this function
-var movieThis = function() {
+var movieThis = function(movie) {
+  fs.appendFile("log.txt", `${command} ${movie} @ ${moment().format('MMMM Do YYYY, h:mm:ss a')}\n`, function(error) {
+    if (error) {
+      console.log(error)
+    } 
+  });
 
-    if (val !== "") {
+    if (movie !== "") {
       var movie = val;
       var queryURL = "http://omdbapi.com/?apikey=e264beba&t=" + movie
       
@@ -146,6 +166,13 @@ var movieThis = function() {
       });
         
     } else {
+
+      fs.appendFile("log.txt", `${command} (empty) Mr. Nobody  @ ${moment().format('MMMM Do YYYY, h:mm:ss a')}\n`, function(error) {
+        if (error) {
+          console.log(error)
+        } 
+      });
+
       axios.get("http://omdbapi.com/?apikey=e264beba&t=Mr. Nobody.").then(
         function(response) {
   
@@ -179,12 +206,22 @@ var movieThis = function() {
 }
 
 var doWhatItSays = function() {
+  fs.appendFile("log.txt", `${command} @ ${moment().format('MMMM Do YYYY, h:mm:ss a')}\n`, function(error) {
+    if (error) {
+      console.log(error)
+    } 
+  });
 
   fs.readFile("random.txt", "utf8", function(error, data) {
 
     if(error) {
-      console.log(error)
-    } console.log(data)
+      console.log(error);
+    } 
+    var dataArray = data.split(", ");
+    // console.log(dataArray);
+    console.log(dataArray[1])
+    var arraySong = dataArray[1]
+    spotifyThis(arraySong);
 
   })
 
@@ -195,18 +232,20 @@ var doWhatItSays = function() {
 
 switch (command){
     case "concert-this":
-        bandsInTown();
+        bandsInTown(val);
         break;
 
     case "spotify-this-song":
-        spotifyThis();
+        spotifyThis(val);
         break;
     
     case  "movie-this":
-        movieThis();
+        movieThis(val);
         break;
 
     case "do-what-it-says":
         doWhatItSays();
         break;
+    default:
+    console.log("Please enter a valid command");
 }
